@@ -30,8 +30,11 @@ github.gists.create({
 server.get('/', (req, res) => {
   github.gists.getForUser({ username: 'Chooster' })
   .then((response) => {
-    res.status(200);
-    res.json(response);
+    github.gists.get({ id: response.data[0].id })
+    .then((user) => {
+      res.status(200);
+      res.send(user.data.files['TEST.md'].content);
+    })
   })
   .catch((err) => {
     console.log(err);
